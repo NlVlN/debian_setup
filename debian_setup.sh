@@ -2,11 +2,14 @@
 ssh_port=22
 
 # BASICS
+echo -e '\n\nBASICS\n'
 apt-get update
 apt-get full-upgrade -y
 apt-get install tmux htop vim mc neofetch dnsutils git curl -y
 
 # DOCKER
+echo -e '\n\nDOCKER\n'
+sleep 2
 curl -fsSL https://download.docker.com/linux/debian/gpg |  apt-key add -
 add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/debian \
@@ -18,17 +21,73 @@ apt-get install apt-transport-https ca-certificates gnupg2 software-properties-c
 apt-get install docker-ce docker-ce-cli containerd.io 
 
 ## DROPBOX
+#echo -e '\n\nDROPBOX\n'
+#sleep 2
 #echo 'deb http://linux.dropbox.com/ubuntu xenial main' >> /etc/apt/source.list
 #apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
 #apt-get install dropbox -y
 
 # SSH
+echo -e '\n\nSSH\n'
+sleep 2
 sed -i "s/#Port 22/Port ${ssh_port}/g" /etc/ssh/sshd_config
 echo -e "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256\nPubkeyAuthentication yes" >> /etc/ssh/sshd_config
 
-# .BASHRC
-echo "#######################
+# IPTABLES
+# basic iptables configuration from debian wiki
+echo -e '\n\nIPTABLES\n'
+sleep 2
+echo "*filter
 
+-P INPUT DROP
+-P FORWARD DROP
+-P OUTPUT ACCEPT
+
+# Allows all loopback (lo0) traffic and drop all traffic to 127/8 that doesn't use lo0
+-A INPUT -i lo -j ACCEPT
+-A INPUT ! -i lo -d 127.0.0.0/8 -j REJECT
+
+# Accepts all established inbound connections
+-A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+
+# Allows all outbound traffic
+# You could modify this to only allow certain traffic
+#-A OUTPUT -j ACCEPT
+
+# Allows HTTP and HTTPS connections from anywhere (the normal ports for websites)
+#-A INPUT -p tcp --dport 80 -j ACCEPT
+#-A INPUT -p tcp --dport 443 -j ACCEPT
+
+# Allows SSH connections
+-A INPUT -p tcp -m state --state NEW --dport ${ssh_port} -j ACCEPT
+
+# Allow ping
+#  note that blocking other types of icmp packets is considered a bad idea by some
+#  remove -m icmp --icmp-type 8 from this line to allow all kinds of icmp:
+#  https://security.stackexchange.com/questions/22711
+-A INPUT -p icmp -m icmp --icmp-type 0 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 3 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 5 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT
+-A INPUT -p icmp -m icmp --icmp-type 11 -j ACCEPT
+
+# log iptables denied calls (access via 'dmesg' command)
+-A INPUT -m limit --limit 5/min -j LOG --log-prefix \"iptables denied: \" --log-level 7
+
+# Reject all other inbound - default deny unless explicitly allowed policy:
+#-A INPUT -j REJECT
+#-A FORWARD -j REJECT
+
+COMMIT" > /etc/iptables.test.rules
+iptables-restore < /etc/iptables.test.rules
+iptables-save > /etc/iptables.up.rules
+echo -e '#!/bin/sh\n/sbin/iptables-restore < /etc/iptables.up.rules' > /etc/network/if-pre-up.d/iptables
+chmod +x /etc/network/if-pre-up.d/iptables
+
+# .BASHRC
+echo -e '\n\n.BASHRC AND .TMUX\n'
+sleep 2
+echo "#######################
 
 export LS_OPTIONS='--color=auto'
 alias ls='ls $LS_OPTIONS'
@@ -40,7 +99,6 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
        	. /etc/bash_completion
 fi
-
 
 #######################" >> /etc/bash.bashrc
 
