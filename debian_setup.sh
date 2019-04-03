@@ -1,4 +1,5 @@
 #!/bin/bash
+ssh_port=5739
 
 # BASICS
 apt-get update
@@ -16,10 +17,14 @@ apt-get update
 apt-get install apt-transport-https ca-certificates gnupg2 software-properties-common -y
 apt-get install docker-ce docker-ce-cli containerd.io 
 
-# DROPBOX
-echo 'deb http://linux.dropbox.com/ubuntu xenial main' >> /etc/apt/source.list
-apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
-apt-get install dropbox -y
+## DROPBOX
+#echo 'deb http://linux.dropbox.com/ubuntu xenial main' >> /etc/apt/source.list
+#apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
+#apt-get install dropbox -y
+
+# SSH
+sed -i "s/#Port 22/Port ${ssh_port}/g" /etc/ssh/sshd_config
+echo -e "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256\nPubkeyAuthentication yes" >> /etc/ssh/sshd_config
 
 # .BASHRC
 echo "#######################
@@ -51,4 +56,3 @@ sleep 1
 echo "1"
 sleep 1
 reboot
-
