@@ -23,7 +23,7 @@ add-apt-repository \
    stable"
 
 apt-get update
-apt-get install docker-ce docker-ce-cli containerd.io 
+apt-get install docker-ce docker-ce-cli containerd.io -y
 
 ## DROPBOX
 #echo -e '\n\nDROPBOX\n'
