@@ -1,5 +1,8 @@
 #!/bin/bash
 ssh_port=22
+echo "SSH will run on port $ssh_port
+To change it stop script and adjust variable"
+sleep 5
 
 # BASICS
 echo -e '\n\nBASICS\n'
@@ -9,7 +12,10 @@ apt-get install tmux htop vim mc neofetch dnsutils git curl -y
 
 # DOCKER
 echo -e '\n\nDOCKER\n'
-sleep 2
+sleep 3
+
+apt-get install apt-transport-https ca-certificates gnupg2 software-properties-common -y
+apt-get update
 curl -fsSL https://download.docker.com/linux/debian/gpg |  apt-key add -
 add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/debian \
@@ -17,26 +23,25 @@ add-apt-repository \
    stable"
 
 apt-get update
-apt-get install apt-transport-https ca-certificates gnupg2 software-properties-common -y
 apt-get install docker-ce docker-ce-cli containerd.io 
 
 ## DROPBOX
 #echo -e '\n\nDROPBOX\n'
-#sleep 2
+#sleep 3
 #echo 'deb http://linux.dropbox.com/ubuntu xenial main' >> /etc/apt/source.list
 #apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
 #apt-get install dropbox -y
 
 # SSH
 echo -e '\n\nSSH\n'
-sleep 2
+sleep 3
 sed -i "s/#Port 22/Port ${ssh_port}/g" /etc/ssh/sshd_config
 echo -e "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256\nPubkeyAuthentication yes" >> /etc/ssh/sshd_config
 
 # IPTABLES
 # basic iptables configuration from debian wiki
 echo -e '\n\nIPTABLES\n'
-sleep 2
+sleep 3
 echo "*filter
 
 -P INPUT DROP
@@ -86,12 +91,12 @@ chmod +x /etc/network/if-pre-up.d/iptables
 
 # .BASHRC
 echo -e '\n\n.BASHRC AND .TMUX\n'
-sleep 2
-echo "#######################
+sleep 3
+echo "
+#######################
 
-export LS_OPTIONS='--color=auto'
-alias ls='ls $LS_OPTIONS'
-alias l='ls $LS_OPTIONS -lA'
+alias ls='ls --color=auto'
+alias l='ls -lA --color=auto'
 alias mc='mc -b'
 alias grep='grep --color=auto'
 if [ -f /usr/share/bash-completion/bash_completion ]; then
@@ -107,10 +112,14 @@ echo "bind a set synchronize-panes off
 bind s set synchronize-panes on" >> ~/.tmux.conf
 
 
-echo "Rebooting in: 3"
+echo "Rebooting in: 5"
 sleep 1
-echo "2"
+echo "              4"
 sleep 1
-echo "1"
+echo "              3"
+sleep 1
+echo "              2"
+sleep 1
+echo "              1"
 sleep 1
 reboot
