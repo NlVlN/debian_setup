@@ -1,11 +1,17 @@
 #!/bin/bash
+
+if [[ $EUID -ne 0 ]]; then
+    echo "This script must be run as root" ;
+    exit 1;
+fi
 ssh_port=22
+username='foo'
 echo "SSH will run on port $ssh_port
 To change it stop script and adjust variable"
 sleep 5
 
 # BASICS
-echo -e '\n\nBASICS\n'
+echo -e '\n\nUPDATE\n'
 apt-get update
 apt-get full-upgrade -y
 apt-get install tmux htop vim mc neofetch dnsutils git curl -y
@@ -32,7 +38,7 @@ apt-get install docker-ce docker-ce-cli containerd.io -y
 #apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
 #apt-get install dropbox -y
 
-# SSH
+# SSH SERVER
 echo -e '\n\nSSH\n'
 sleep 3
 sed -i "s/#Port 22/Port ${ssh_port}/g" /etc/ssh/sshd_config
@@ -88,6 +94,14 @@ iptables-restore < /etc/iptables.test.rules
 iptables-save > /etc/iptables.up.rules
 echo -e '#!/bin/sh\n/sbin/iptables-restore < /etc/iptables.up.rules' > /etc/network/if-pre-up.d/iptables
 chmod +x /etc/network/if-pre-up.d/iptables
+
+# SUDO
+read -p "Add user $username to sudo?[y/N] " -r
+if [[ $REPLY =~ ^[Yy]$ ]]
+then
+    adduser $username sudo
+fi
+
 
 # .BASHRC
 echo -e '\n\n.BASHRC AND .TMUX\n'
