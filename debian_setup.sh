@@ -1,5 +1,5 @@
 #!/bin/bash
-ssh_port=5739
+ssh_port=22
 
 # BASICS
 apt-get update
