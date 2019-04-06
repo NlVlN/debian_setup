@@ -131,14 +131,10 @@ echo "bind a set synchronize-panes off
 bind s set synchronize-panes on" >> ~/.tmux.conf
 
 
-echo "Rebooting in: 5"
-sleep 1
-echo "              4"
-sleep 1
-echo "              3"
-sleep 1
-echo "              2"
-sleep 1
-echo "              1"
-sleep 1
+secs=$((5))
+while [ $secs -gt 0 ]; do
+   echo -ne "rebooting in $secs\033[0K\r"
+   sleep 1
+   : $((secs--))
+done
 reboot
