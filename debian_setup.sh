@@ -51,6 +51,10 @@ sleep 3
 sed -i "s/#Port 22/Port ${ssh_port}/g" /etc/ssh/sshd_config
 echo -e "KexAlgorithms curve25519-sha256@libssh.org,diffie-hellman-group-exchange-sha256\nPubkeyAuthentication yes" >> /etc/ssh/sshd_config
 
+# JOURNALCTL
+echo -e '\n\nJOURNALCTL\n'
+sed -i 's/#Storage=auto/Storage=persistent/' /etc/systemd/journald.conf
+
 # IPTABLES
 # basic iptables configuration from debian wiki
 echo -e '\n\nIPTABLES\n'
