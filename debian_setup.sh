@@ -1,5 +1,4 @@
 #!/bin/bash
-# TODO: journalctl
 # TODO: fail2ban
 # TODO: vim 
 
@@ -39,8 +38,8 @@ curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compo
 chmod +x /usr/local/bin/docker-compose
 curl -L https://raw.githubusercontent.com/docker/compose/1.24.1/contrib/completion/bash/docker-compose -o /etc/bash_completion.d/docker-compose
 
-## DROPBOX
-#echo -e '\n\nDROPBOX\n'
+## DROPBOX DESKTOP CLIENT
+#echo -e '\n\nDROPBOX DESKTOP CLIENT\n'
 #sleep 3
 #echo 'deb http://linux.dropbox.com/ubuntu xenial main' >> /etc/apt/source.list
 #apt-key adv --keyserver pgp.mit.edu --recv-keys 1C61A2656FB57B7E4DE0F4C1FC918B335044912E
@@ -143,7 +142,8 @@ fi
 
 # .TMUX
 echo "bind a set synchronize-panes off
-bind s set synchronize-panes on" >> ~/.tmux.conf
+bind s set synchronize-panes on
+set -g mouse on" >> ~/.tmux.conf
 
 
 secs=$((5))
