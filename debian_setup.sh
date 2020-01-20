@@ -4,7 +4,7 @@
 # TODO: Firefox
 
 if [[ $EUID -ne 0 ]]; then
-    echo "This script must be run as root" ;
+    echo "This script must run as root";
     exit 1;
 fi
 ssh_port=22
