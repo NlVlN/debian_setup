@@ -1,6 +1,7 @@
 #!/bin/bash
 # TODO: fail2ban
-# TODO: vim 
+# TODO: vim
+# TODO: Firefox
 
 if [[ $EUID -ne 0 ]]; then
     echo "This script must be run as root" ;
