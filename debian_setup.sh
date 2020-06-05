@@ -128,6 +128,11 @@ echo -e '\n\n.BASHRC AND .TMUX\n'
 sleep 3
 echo "
 #######################
+shopt -s histappend
+HISTCONTROL=ignoreboth
+HISTSIZE=10000
+HISTFILESIZE=-1
+HISTIGNORE='ls:l:bg:fg:history:tree:sudo -s:ip a:vim:pwd:tmux:cd ..:htop:python3:mc:ps:ps aux'
 
 alias ls='ls --color=auto'
 alias l='ls -lA --color=auto'
