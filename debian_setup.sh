@@ -57,12 +57,12 @@ echo -e '\n\nJOURNALCTL\n'
 sed -i 's/#Storage=auto/Storage=persistent/' /etc/systemd/journald.conf
 
 # NGINX
-apt-get install curl gnupg2 ca-certificates lsb-release
+apt-get install curl gnupg2 ca-certificates lsb-release -y
 echo "deb http://nginx.org/packages/debian `lsb_release -cs` nginx" \
-tee /etc/apt/sources.list.d/nginx.list
-curl -fsSL https://nginx.org/keys/nginx_signing.key | sudo apt-key add -
+| tee /etc/apt/sources.list.d/nginx.list
+curl -fsSL https://nginx.org/keys/nginx_signing.key | apt-key add -
 apt-get update
-apt-get install nginx
+apt-get install nginx -y
 
 # IPTABLES
 # basic iptables configuration from debian wiki
