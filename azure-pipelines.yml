@@ -10,12 +10,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- script: pwd; ls -la
+- script: echo ok
   displayName: 'Run a one-line script'
 
 - checkout: self
 
 - script: |
     chmod +x debian_setup.sh;
-    sudo debian_setup.sh
+    sudo ./debian_setup.sh
   displayName: 'run script'
