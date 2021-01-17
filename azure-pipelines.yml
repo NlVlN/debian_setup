@@ -16,5 +16,5 @@ steps:
 - checkout: self
 
 - script: |
-    ls -la; pwd
-  displayName: 'Run a multi-line script'
+    /bin/bash debian_setup.sh
+  displayName: 'run script'
